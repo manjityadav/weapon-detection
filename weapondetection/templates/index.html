@@ -59,5 +59,17 @@
     Confidential Security System | Developed by Manjeet Yadav
 </footer>
 
+<!-- ------------------------
+     Browser Alarm Script
+--------------------------->
+{% if detected %}
+<script>
+    // Play alarm sound when weapon is detected
+    const alarm = new Audio("/static/alarm.mp3"); // make sure you have alarm.mp3 in static folder
+    alarm.loop = true; // loop until page reload or user stops
+    alarm.play().catch(e => console.log("Alarm autoplay blocked:", e));
+</script>
+{% endif %}
+
 </body>
 </html>
