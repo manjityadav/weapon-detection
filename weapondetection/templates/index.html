@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Surveillance - Weapon Detection</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+
+<body>
+
+<header>
+    <h1>AI Surveillance System - Weapon Detection Module</h1>
+
+    {% if detected %}
+        <div class="status danger">THREAT DETECTED</div>
+    {% else %}
+        <div class="status">SYSTEM MONITORING</div>
+    {% endif %}
+</header>
+
+<div class="container">
+
+    <div class="section">
+        <h2>Image Analysis</h2>
+        <form action="/detect_image" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <br>
+            <button type="submit">Run Detection</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Video Analysis</h2>
+        <form action="/detect_video" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <br>
+            <button type="submit">Run Detection</button>
+        </form>
+    </div>
+
+    {% if result_image %}
+    <div class="section">
+        <h2>Detection Output</h2>
+        <img src="{{ result_image }}">
+        <div class="timestamp">
+            Processed at: {{ timestamp }}
+        </div>
+
+        <form action="/stop">
+            <button class="danger-btn">STOP DETECTION</button>
+        </form>
+    </div>
+    {% endif %}
+
+</div>
+
+<footer>
+    Confidential Security System | Developed by Manjeet Yadav
+</footer>
+
+</body>
+</html>

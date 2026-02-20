@@ -1,0 +1,5 @@
+Flask
+opencv-python
+numpy
+gunicorn      # optional, only needed for server deployment
+ultralytics
