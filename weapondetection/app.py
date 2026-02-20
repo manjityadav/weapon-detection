@@ -3,8 +3,6 @@ import cv2
 import numpy as np
 import os
 import uuid
-import winsound
-import threading
 from ultralytics import YOLO  # YOLOv8
 
 app = Flask(__name__)
@@ -20,15 +18,6 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # ----------------------------
 model = YOLO('yolov8n.pt')  # small, fast model for testing
 
-alarm_lock = threading.Lock()
-
-# ----------------------------
-# Alarm Function (Thread Safe)
-# ----------------------------
-def play_alarm():
-    with alarm_lock:
-        winsound.Beep(1000, 700)
-
 # ----------------------------
 # Detection Function
 # ----------------------------
@@ -41,7 +30,7 @@ def detect_frame(img):
             cls = int(box.cls[0])
             conf = float(box.conf[0])
 
-            # Here we assume every detection could be a weapon
+            # Consider all detections as potential weapons
             if conf > 0.5:
                 weapon_detected = True
                 x1, y1, x2, y2 = map(int, box.xyxy[0])
@@ -55,9 +44,6 @@ def detect_frame(img):
                     (0, 0, 255),
                     2
                 )
-
-    if weapon_detected:
-        threading.Thread(target=play_alarm).start()
 
     return img, weapon_detected
 
@@ -148,4 +134,4 @@ def detect_video():
 # Run App
 # ----------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
